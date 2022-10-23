@@ -1,6 +1,10 @@
+"""A handy python function to parse and convert to and between datetime.datetime, int, and string objects"""
 import math
 import datetime
 from dateparser import parse
+
+__version__ = "1.0a1"
+
 
 DateTypes = str | int | float | datetime.date
 TIMESTAMP_DIGITS = 10
@@ -13,7 +17,6 @@ PARSER_SETTINGS = {
 
 def date_to(your_date: DateTypes, end_type: DateTypes) -> DateTypes:
     """
-
     :param your_date: Requires to be either int, float, str, or datetime.date
     :param end_type: The type you want the date to be converted into
     :return: converted time to specified Type[end_type] rounded to seconds and always in UTC
