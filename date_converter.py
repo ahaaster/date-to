@@ -23,7 +23,7 @@ def date_to(your_date: DateTypes, end_type: DateTypes) -> DateTypes:
     """
 
     if isinstance(end_type, str):
-        if end_type.lower() in ["timestamp", "epoch", "int", "unix"]:
+        if end_type.lower() in ["timestamp", "epoch", "int", "unix", "float"]:
             end_type = int
         elif end_type.lower() in ["datetime", "datetime.time", "date"]:
             end_type = datetime.date
@@ -31,8 +31,8 @@ def date_to(your_date: DateTypes, end_type: DateTypes) -> DateTypes:
             end_type = str
         else:
             raise TypeError(
-                f"The only date types allowed are {DateTypes} "
-                f"or one of the strings 'timestamp', 'epoch', 'datetime'"
+                f"The only date types allowed are {DateTypes} either as an object or in stringform.\n"
+                f"Other accepted strings representations of these types are: ['timestamp', 'epoch', 'unix', 'datetime, 'date', 'string']"
             )
 
     if not your_date:
@@ -80,10 +80,13 @@ def _round_timestamp_to_seconds(_timestamp: int) -> int:  # Assumes positive num
 
 
 def _date_time_to_timestamp(_date_time) -> int:
-    """Issue:https://stackoverflow.com/questions/60736569/timestamp-subtraction-must-have-the-same-timezones-or-no-timezones-but-they-are"""
+    # pd.to_datetime uses pytz, can result in conflict
+    # we're overriding the timezone class to avoid any conflict
+    # Issue:https://stackoverflow.com/questions/60736569/timestamp-subtraction-must-have-the-same-timezones-or-no-timezones-but-they-are
+    # TODO: test if this overriding causes non-UTC timezones to get borked
     _date_time = _date_time.replace(
         tzinfo=datetime.timezone.utc
-    )  # pd.to_datetime uses pytz, can result in conflict
+    )  
     unix_start = datetime.datetime.fromtimestamp(0, tz=datetime.timezone.utc)
     return int((_date_time - unix_start).total_seconds())
 
