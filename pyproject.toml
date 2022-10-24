@@ -1,0 +1,21 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "date_converter"
+authors = [{name = "Arnaud van Haaster", email = "dont@me.please"}]
+dynamic = ["version", "description"]
+readme = "README.md"
+license = { file = "LICENSE" }
+classifiers = [
+    "Intended Audience :: Developers",
+    "License :: OSI APPROVED :: The Unlicense (Unlicense)",
+]
+dependencies = [
+    "dateparser>=1.1.2",
+]
+requires-python = ">=3.10"
+
+[project.urls]
+Home = "https://github.com/ahaaster/date-converter"
