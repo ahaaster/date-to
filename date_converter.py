@@ -31,10 +31,11 @@ def date_to(your_date: DateTypes, end_type: DateTypes) -> DateTypes:
             end_type = str
         else:
             raise TypeError(
-                f"The only date types allowed are {DateTypes} either as an object or in stringform.\n"
-                f"Other accepted strings representations of these types are: ['timestamp', 'epoch', 'unix', 'datetime, 'date', 'string']"
+                f"The only date input types allowed are {DateTypes} either as an object or in stringform.\n"
+                f"Other accepted string representations of these types are: ['timestamp', 'epoch', 'unix', 'datetime, 'date', 'string']"
             )
 
+    # TODO: Add behaviour for float end_type support
     if not your_date:
         return your_date
     elif isinstance(your_date, int):
@@ -84,9 +85,7 @@ def _date_time_to_timestamp(_date_time) -> int:
     # we're overriding the timezone class to avoid any conflict
     # Issue:https://stackoverflow.com/questions/60736569/timestamp-subtraction-must-have-the-same-timezones-or-no-timezones-but-they-are
     # TODO: test if this overriding causes non-UTC timezones to get borked
-    _date_time = _date_time.replace(
-        tzinfo=datetime.timezone.utc
-    )  
+    _date_time = _date_time.replace(tzinfo=datetime.timezone.utc)
     unix_start = datetime.datetime.fromtimestamp(0, tz=datetime.timezone.utc)
     return int((_date_time - unix_start).total_seconds())
 
