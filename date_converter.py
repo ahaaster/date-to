@@ -1,9 +1,9 @@
 """A handy python function to parse and convert to and between datetime.datetime, int, and string objects"""
+__version__ = "1.0a1"
+
 import math
 import datetime
 from dateparser import parse
-
-__version__ = "1.0a1"
 
 
 DateTypes = str | int | float | datetime.date
@@ -54,7 +54,7 @@ def date_to(your_date: DateTypes, end_type: DateTypes) -> DateTypes:
 
     elif end_type == str:
         if isinstance(your_date, str):
-            # This operation completes a possibly incomplete query_string to the second
+            # This operation completes a possibly incomplete query_string to seconds
             your_date = _to_datetime(your_date)
         elif isinstance(your_date, (int, float)):
             your_date = _to_datetime(your_date)
@@ -90,6 +90,6 @@ def _date_time_to_timestamp(_date_time) -> int:
     return int((_date_time - unix_start).total_seconds())
 
 
-def _string_date_to_timestamp(date_string: str) -> int:
-    date_time = _to_datetime(date_string)
+def _string_date_to_timestamp(_date_string: str) -> int:
+    date_time = _to_datetime(_date_string)
     return _date_time_to_timestamp(date_time)
