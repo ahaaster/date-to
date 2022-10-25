@@ -1,10 +1,13 @@
 # Date Converter
 
-A handy date parser and converter that handles timestamps, strings, and datetime.date.
-
 ### Convert from any date to another with a single function!
 
 Date converter will make your naive dates timezone aware and uniformly convert them to UTC for your convenience!
+
+## Installation
+```
+pip install date_to
+```
 
 ## Basic Use
 
@@ -13,9 +16,9 @@ from date_to import date_to
 
 some_date = "2001-09-11 17:20 EDT"
 
-date_to(some_date, str)
-date_to(some_date, int)
-date_to(some_date, "datetime")
+a = date_to(some_date, str)
+b = date_to(some_date, int)
+c = date_to(some_date, "datetime")
 
 print(type(a), a)
 print(type(b), b)
@@ -37,7 +40,7 @@ from datetime import datetime
 
 accepted_object_inputs = int | str | datetime.date
 accepted_string_inputs = [
-    "str", "string",
+    "str", "string", "text",
     "int", "timestamp", "epoch", "unix", "float",
     "datetime.date", "datetime", "date",
 ]

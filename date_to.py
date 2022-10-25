@@ -27,7 +27,7 @@ def date_to(your_date: DateTypes, end_type: DateTypes) -> DateTypes:
             end_type = int
         elif end_type.lower() in ["datetime", "datetime.date", "date"]:
             end_type = datetime.date
-        elif end_type.lower() in ["str", "string"]:
+        elif end_type.lower() in ["str", "string", "text"]:
             end_type = str
         else:
             raise TypeError(
