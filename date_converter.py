@@ -25,7 +25,7 @@ def date_to(your_date: DateTypes, end_type: DateTypes) -> DateTypes:
     if isinstance(end_type, str):
         if end_type.lower() in ["timestamp", "epoch", "int", "unix", "float"]:
             end_type = int
-        elif end_type.lower() in ["datetime", "datetime.time", "date"]:
+        elif end_type.lower() in ["datetime", "datetime.date", "date"]:
             end_type = datetime.date
         elif end_type.lower() in ["str", "string"]:
             end_type = str

@@ -7,7 +7,7 @@ Date converter will make your naive dates timezone aware and uniformly convert t
 ## Basic Use
 
 ```python
-from date-converter import date_to
+from date_converter import date_to
 
 some_date = "2001-09-11 17:20 EDT"
 
@@ -22,4 +22,16 @@ __Out:__
 2001-09-11T21:20:00+00:00
 1000243200
 2001-09-11 21:20:00+00:00
+```
+
+### Accepted Inputs
+```python
+from datetime import datetime
+
+accepted_object_inputs = int | str | datetime.date
+accepted_string_inputs = [
+    "str", "string",
+    "int", "timestamp", "epoch", "unix", "float",
+    "datetime.date", "datetime", "date",
+]
 ```
