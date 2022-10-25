@@ -6,12 +6,20 @@ Date converter will make your naive dates timezone aware and uniformly convert t
 
 ## Basic Use
 
-``` { .python capture }
+```python
 from date-converter import date_to
 
-some_date = "2022-03-01 14:00"
+some_date = "2001-09-11 17:20 EDT"
 
-d = date_to(some_date, int)
+print(date_to(some_date, str))
+print(date_to(some_date, int))
+print(date_to(some_date, "datetime"))
+```
 
-print(f"The converted date to unix timestamps is now: {d}")
+__Out:__
+
+```
+2001-09-11T21:20:00+00:00
+1000243200
+2001-09-11 21:20:00+00:00
 ```
