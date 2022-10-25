@@ -1,8 +1,10 @@
 # Date Converter
 
-### Convert from any date to another with a single function!
+### Convert from any date to another with just a single function
 
-Date converter will make your naive dates timezone aware and uniformly convert them to UTC for your convenience!
+```date_to``` will make your naive dates timezone aware and uniformly convert. No more boilerplate and headaches of trying to keep track of your dates and their (lack) of timezones
+
+All output dates are converted to UTC and rounded to second precision.
 
 ## Installation
 ```
