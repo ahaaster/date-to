@@ -6,10 +6,12 @@ Date converter will make your naive dates timezone aware and uniformly convert t
 
 ## Basic Use
 
-``` 
+``` { .python capture }
 from date-converter import date_to
 
 some_date = "2022-03-01 14:00"
 
-date_to(some_date, int)
+d = date_to(some_date, int)
+
+print(f"The converted date to unix timestamps is now: {d}")
 ```
