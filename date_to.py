@@ -1,5 +1,5 @@
 """A handy python function to parse and convert to and between datetime.datetime, int, and string objects"""
-__version__ = "1.0a1"
+__version__ = "1.0a2"
 
 import math
 import datetime
