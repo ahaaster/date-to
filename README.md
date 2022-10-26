@@ -1,5 +1,7 @@
 # date_to - A light-weight, handy date converter
 
+[![https://img.shields.io/pypi/v/date_to?label=version](https://img.shields.io/pypi/v/date_to?label=version)](https://pypi.org/project/date_to/)
+
 ### Convert any date to another with just one friendly function
 
 ```date_to()``` will convert your dates between datetime objects, unix timestamps, and strings. No more boilerplate and headaches of trying to keep track of your dates and their (lack) of timezones.
