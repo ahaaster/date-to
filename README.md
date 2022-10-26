@@ -1,15 +1,15 @@
-# date_to - A handy date converter
+# date_to - A light-weight, handy date converter
 
-### Convert any date to another with just a single function
+### Convert any date to another with just one friendly function
 
-```date_to()``` will make your naive dates timezone aware and uniformly convert. No more boilerplate and headaches of trying to keep track of your dates and their (lack) of timezones
+```date_to()``` will convert your dates between datetime objects, unix timestamps, and strings. No more boilerplate and headaches of trying to keep track of your dates and their (lack) of timezones.
 
-All output dates are converted to UTC and rounded to second precision.
+```date_to``` utilises the dateparser library for string parsing, enabling [many kinds of string representations](url="https://dateparser.readthedocs.io/en/latest/index.html#features") of time to be converted into machine interpretable dates.
 
-## Installation
-```
-pip install date_to
-```
+All output dates are rounded to second precision.
+Default conversion is to the UTC timezone. 
+
+If you wish to change this conversion behaviour you can add a dict of keyword arguments to the function's ```parser_settings=``` optional keyword argument. Please refer to the [dateparser documentation](url="https://dateparser.readthedocs.io/en/latest/dateparser.html#dateparser.parse") for possible settings
 
 ## Basic Use
 
@@ -35,15 +35,21 @@ print(type(c), c)
 <class 'datetime.datetime'> 2001-09-11 21:20:00+00:00
 ```
 
+## Installation
+The ```date_to``` library is available on [PyPi]("https://pypi.org/project/date_to/") and easily installed using pip:
+```
+pip install date_to
+```
+
 ### Accepted Inputs
 
 ```python
 from datetime import datetime
 
 accepted_object_inputs = int | str | datetime.date
-accepted_string_inputs = [
-    "str", "string", "text",
-    "int", "timestamp", "epoch", "unix", "float",
-    "datetime.date", "datetime", "date",
-]
+accepted_string_inputs = {
+    "str": ["str", "string", "text",],
+    "date": ["date", "datetime.date", "datetime",],
+    "int": ["int", "timestamp", "epoch", "unix", "float",],
+}
 ```
