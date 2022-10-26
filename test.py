@@ -1,6 +1,6 @@
 import unittest
 import datetime
-from date_converter import date_to
+from date_to import date_to
 
 LOCAL_STR = "2001-09-11 17:20:52 EDT"
 TIME_STR = "2001-09-11T21:20:52+00:00"
