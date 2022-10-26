@@ -1,5 +1,5 @@
 """A handy python function to parse and convert to and between datetime.datetime, int, and string objects"""
-__version__ = "1.0a2"
+__version__ = "1.0a3"
 
 import math
 import datetime
@@ -13,6 +13,11 @@ PARSER_SETTINGS = {
     "PREFER_DAY_OF_MONTH": "first",
     "RETURN_AS_TIMEZONE_AWARE": True,
 }
+ACCEPTED_STRINGS = [
+    ["int", "timestamp", "epoch", "unix", "float",],
+    ["datetime.date", "datetime", "date",],
+    ["str", "string", "text",],
+]
 
 
 def date_to(your_date: DateTypes, end_type: DateTypes) -> DateTypes:
@@ -23,16 +28,16 @@ def date_to(your_date: DateTypes, end_type: DateTypes) -> DateTypes:
     """
 
     if isinstance(end_type, str):
-        if end_type.lower() in ["timestamp", "epoch", "int", "unix", "float"]:
+        if end_type.lower() in ACCEPTED_STRINGS[0]:
             end_type = int
-        elif end_type.lower() in ["datetime", "datetime.date", "date"]:
+        elif end_type.lower() in ACCEPTED_STRINGS[1]:
             end_type = datetime.date
-        elif end_type.lower() in ["str", "string", "text"]:
+        elif end_type.lower() in ACCEPTED_STRINGS[2]:
             end_type = str
         else:
             raise TypeError(
                 f"The only date input types allowed are {DateTypes} either as an object or in stringform.\n"
-                f"Other accepted string representations of these types are: ['timestamp', 'epoch', 'unix', 'datetime, 'date', 'string']"
+                f"Other accepted string representations of these types are: {ACCEPTED_STRINGS}"
             )
 
     # TODO: Add behaviour for float end_type support
