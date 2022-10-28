@@ -2,20 +2,20 @@
 __version__ = "1.0"
 
 import math
-import datetime
+import datetime as dt
 from dateparser import parse
 
 
-DateTypes = str | int | float | datetime.date
+DateTypes = str | int | float | dt.date
 ACCEPTED_STRINGS = {
-    "str": ["str", "string", "text",],
-    "date": ["datetime.date", "datetime", "date",],
-    "int": ["int", "timestamp", "epoch", "unix", "float",],
+    "str": ["str", "string", "text", ],
+    "date": ["datetime.date", "datetime", "date", "dt", "dt.date", ],
+    "int": ["int", "timestamp", "epoch", "unix", "float", ],
 }
 
 TIMESTAMP_DIGITS = 10
 DEFAULT_SETTINGS = {
-    "TIMEZONE": "UTC",
+    "TO_TIMEZONE": "UTC",
     "PREFER_DAY_OF_MONTH": "first",
     "RETURN_AS_TIMEZONE_AWARE": True,
 }
@@ -37,7 +37,7 @@ def date_to(your_date: DateTypes, /, end_type: DateTypes,
         if end_type.lower() in ACCEPTED_STRINGS["int"]:
             end_type = int
         elif end_type.lower() in ACCEPTED_STRINGS["date"]:
-            end_type = datetime.date
+            end_type = dt.date
         elif end_type.lower() in ACCEPTED_STRINGS["str"]:
             end_type = str
         else:
@@ -54,64 +54,72 @@ def date_to(your_date: DateTypes, /, end_type: DateTypes,
     elif isinstance(your_date, int):
         your_date = _round_timestamp_to_seconds(your_date)
 
-    if end_type == datetime.date:
-        your_date = _to_datetime(your_date, settings)
+    if end_type == dt.date:
+        if isinstance(your_date, str):
+            return _str_to_datetime(your_date, settings)
+        return _to_datetime(your_date, settings)
 
     elif end_type == int:
         if isinstance(your_date, str):
-            your_date = _string_date_to_timestamp(your_date, settings)
-        elif isinstance(your_date, datetime.date):
-            your_date = _date_time_to_timestamp(your_date)
+            return _string_date_to_timestamp(your_date, settings)
+        elif isinstance(your_date, dt.date):
+            return _date_time_to_timestamp(your_date)
         elif isinstance(your_date, float):
-            your_date = int(your_date)
+            return int(your_date)
 
     elif end_type == str:
         if isinstance(your_date, str):
             # This operation completes a possibly incomplete query_string to seconds
-            your_date = _to_datetime(your_date, settings)
+            your_date = _str_to_datetime(your_date, settings)
         elif isinstance(your_date, (int, float)):
-            your_date = _to_datetime(your_date)
-        your_date = your_date.isoformat()
+            your_date = _to_datetime(your_date, settings)
+        return your_date.isoformat()
 
     return your_date
 
 
-def _to_datetime(_time: DateTypes, settings: dict = DEFAULT_SETTINGS) -> datetime.date:
+def _str_to_datetime(_str_date: str, settings: dict) -> dt.date:
+    _datetime = parse(_str_date, settings=settings)
+    if not _datetime:
+        raise DateInputError(f"Input string could not be parsed")
+    else:
+        return _datetime
+
+
+def _to_datetime(_time: DateTypes, settings: dict) -> dt.date:
     if not isinstance(_time, (int, float)):
-        if isinstance(_time, str):
-            _time = parse(_time, settings=settings)
-        _time = _date_time_to_timestamp(_time) 
+        _time = _date_time_to_timestamp(_time)
 
-    return datetime.datetime.fromtimestamp(_time, tz=datetime.timezone.utc)
+    return dt.datetime.fromtimestamp(_time, tz=dt.timezone.utc)
 
 
-def _round_timestamp_to_seconds(_timestamp: int) -> int:  # Assumes positive number
+def _date_time_to_timestamp(_date_time: dt.date) -> int:
+    # Fix for issue: 
+    # https://stackoverflow.com/questions/60736569/timestamp-subtraction-must-have-the-same-timezones-or-no-timezones-but-they-are
+    _date_time = _date_time.astimezone(dt.timezone.utc)
+    unix_start = dt.datetime.fromtimestamp(0, tz=dt.timezone.utc)
+    return int((_date_time - unix_start).total_seconds())
+
+
+def _string_date_to_timestamp(_date_string: str, settings: dict) -> int:
+    date_time = _str_to_datetime(_date_string, settings)
+    return _date_time_to_timestamp(date_time)
+
+
+def _round_timestamp_to_seconds(_timestamp: int | float) -> int:  # Assumes positive number
     stamp_digits = TIMESTAMP_DIGITS
     num_length = int(math.log10(_timestamp)) + 1
     if num_length > stamp_digits:
         decimal = num_length - stamp_digits
         _timestamp //= 10**decimal
-    return _timestamp
-
-
-def _date_time_to_timestamp(_date_time) -> int:
-    # pd.to_datetime uses pytz, can result in conflict
-    # we're overriding the timezone class to avoid any conflict
-    # Issue: https://stackoverflow.com/questions/60736569/timestamp-subtraction-must-have-the-same-timezones-or-no-timezones-but-they-are
-    # TODO: test if this overriding causes non-UTC timezones to get borked
-    _date_time = _date_time.replace(tzinfo=datetime.timezone.utc)
-    unix_start = datetime.datetime.fromtimestamp(0, tz=datetime.timezone.utc)
-    return int((_date_time - unix_start).total_seconds())
-
-
-def _string_date_to_timestamp(_date_string: str, settings: dict) -> int:
-    date_time = _to_datetime(_date_string, settings)
-    return _date_time_to_timestamp(date_time)
+    return int(_timestamp)
 
 
 def _parse_settings(timezone: str = None, parser_settings: dict = None) -> dict:
         settings = parser_settings if parser_settings else DEFAULT_SETTINGS
         if timezone:
-            settings["TIMEZONE"] = timezone.upper()
+            settings["TO_TIMEZONE"] = timezone.upper()
         return settings
 
+class DateInputError(Exception):
+    pass
