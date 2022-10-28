@@ -21,7 +21,7 @@ DEFAULT_SETTINGS = {
 }
 
 
-def date_to(your_date: DateTypes, /, end_type: DateTypes,  
+def date_to(your_date: DateTypes, /, end_type: DateTypes = dt.date,  
             timezone: str = None, *, parser_settings: dict = None,
             ) -> DateTypes:
     """
@@ -31,15 +31,14 @@ def date_to(your_date: DateTypes, /, end_type: DateTypes,
     :param parser_settings: dict of keyword arguments for overriding default dateparser.parse() settings
     :return: converted time to specified Type[end_type] rounded to seconds
     """
-
        
     if isinstance(end_type, str):
-        if end_type.lower() in ACCEPTED_STRINGS["int"]:
-            end_type = int
+        if end_type.lower() in ACCEPTED_STRINGS["str"]:
+            end_type = str
         elif end_type.lower() in ACCEPTED_STRINGS["date"]:
             end_type = dt.date
-        elif end_type.lower() in ACCEPTED_STRINGS["str"]:
-            end_type = str
+        elif end_type.lower() in ACCEPTED_STRINGS["int"] or end_type == float:
+            end_type = int
         else:
             raise TypeError(
                 f"The only date input types allowed are {DateTypes} either as an object or in stringform.\n"
@@ -48,10 +47,9 @@ def date_to(your_date: DateTypes, /, end_type: DateTypes,
 
     settings = _parse_settings(timezone, parser_settings)
     
-    # TODO: Add behaviour for float end_type support
     if not your_date:
         return your_date
-    elif isinstance(your_date, int):
+    elif isinstance(your_date, (int, float)):
         your_date = _round_timestamp_to_seconds(your_date)
 
     if end_type == dt.date:
@@ -77,11 +75,12 @@ def date_to(your_date: DateTypes, /, end_type: DateTypes,
 
     return your_date
 
+# =====================================
 
 def _str_to_datetime(_str_date: str, settings: dict) -> dt.date:
     _datetime = parse(_str_date, settings=settings)
     if not _datetime:
-        raise DateInputError(f"Input string could not be parsed")
+        raise DateInputError(f"Input string could not be parsed! Input: {_str_date}")
     else:
         return _datetime
 
@@ -105,8 +104,19 @@ def _string_date_to_timestamp(_date_string: str, settings: dict) -> int:
     date_time = _str_to_datetime(_date_string, settings)
     return _date_time_to_timestamp(date_time)
 
+# =====================================
+
+def _parse_settings(timezone: str = None, parser_settings: dict = None) -> dict:
+        settings = parser_settings if parser_settings else DEFAULT_SETTINGS
+        if timezone:
+            settings["TO_TIMEZONE"] = timezone.upper()
+        return settings
+
 
 def _round_timestamp_to_seconds(_timestamp: int | float) -> int:  # Assumes positive number
+    if _timestamp < 0:
+        raise DateInputError(f"Input timestamp {_timestamp} is invalid (negative number)")
+    
     stamp_digits = TIMESTAMP_DIGITS
     num_length = int(math.log10(_timestamp)) + 1
     if num_length > stamp_digits:
@@ -114,12 +124,6 @@ def _round_timestamp_to_seconds(_timestamp: int | float) -> int:  # Assumes posi
         _timestamp //= 10**decimal
     return int(_timestamp)
 
-
-def _parse_settings(timezone: str = None, parser_settings: dict = None) -> dict:
-        settings = parser_settings if parser_settings else DEFAULT_SETTINGS
-        if timezone:
-            settings["TO_TIMEZONE"] = timezone.upper()
-        return settings
 
 class DateInputError(Exception):
     pass
