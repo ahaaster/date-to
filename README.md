@@ -26,18 +26,21 @@ from date_to import date_to
 
 some_date = "2001-09-11 17:20 EDT"
 
-a = date_to(some_date, int)
-b = date_to(some_date, "date")
-c = date_to(some_date, str, timezone="JST")
+a = date_to(some_date)
+b = date_to(some_date, int)
+c = date_to(some_date, "date")
+d = date_to(some_date, str, timezone="JST")
 
 print(a, type(a))
 print(b, type(b))
 print(c, type(c))
+print(d, type(d))
 ```
 
 **Output:**
 
 ```
+2001-09-11 21:20:00+00:00 <class 'datetime.datetime'> 
 1000243200 <class 'int'> 
 2001-09-11 21:20:00+00:00 <class 'datetime.datetime'> 
 2001-09-12 06:20:00+09:00 <class 'str'> 
