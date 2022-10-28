@@ -40,10 +40,10 @@ print(d, type(d))
 **Output:**
 
 ```
-2001-09-11 21:20:00+00:00 <class 'datetime.datetime'> 
-2001-09-11 21:20:00+00:00 <class 'datetime.datetime'> 
-1000243200 <class 'int'> 
-2001-09-12 06:20:00+09:00 <class 'str'> 
+2001-09-11 21:20:00+00:00 <class 'datetime.datetime'>
+2001-09-11 21:20:00+00:00 <class 'datetime.datetime'>
+1000243200 <class 'int'>
+2001-09-12T06:20:00+09:00 <class 'str'>
 ```
 
 ### Accepted Inputs
