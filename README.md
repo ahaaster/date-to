@@ -10,7 +10,7 @@
 
 All output dates are rounded to second precision.
 Default conversion is to the UTC timezone. 
-As of now, timezone conversion is only supported from ```str``` to ```str | datetime.date```. Further conversion support is planned
+As of now, timezone conversion is only supported from ```str``` to ```str | datetime.date```. Further conversion support is planned.
 
 
 ## Installation
@@ -27,8 +27,8 @@ from date_to import date_to
 some_date = "2001-09-11 17:20 EDT"
 
 a = date_to(some_date)
-b = date_to(some_date, int)
-c = date_to(some_date, "date")
+b = date_to(some_date, "date")
+c = date_to(some_date, int)
 d = date_to(some_date, str, timezone="JST")
 
 print(a, type(a))
@@ -41,8 +41,8 @@ print(d, type(d))
 
 ```
 2001-09-11 21:20:00+00:00 <class 'datetime.datetime'> 
-1000243200 <class 'int'> 
 2001-09-11 21:20:00+00:00 <class 'datetime.datetime'> 
+1000243200 <class 'int'> 
 2001-09-12 06:20:00+09:00 <class 'str'> 
 ```
 
@@ -51,7 +51,7 @@ print(d, type(d))
 ```python
 from datetime import date
 
-accepted_object_inputs = int | str | date
+accepted_object_inputs = str | date | int | float
 accepted_string_inputs = {
     str: ["str", "string", "text"],
     date: ["datetime.date", "datetime", "date", "dt", "dt.date"],
@@ -59,7 +59,7 @@ accepted_string_inputs = {
 }
 ```
 #### Parse Settings
-If you wish to change the string parse conversion behaviour you can add a ```dict``` of keyword arguments to the function's ```parser_settings=``` optional keyword argument. Please refer to the [dateparser documentation](url="https://dateparser.readthedocs.io/en/latest/dateparser.html#dateparser.parse") for possible settings
+If you wish to change the string parse conversion behaviour you can add a ```dict``` of keyword arguments to the function's ```parser_settings=``` optional keyword argument. Please refer to the [dateparser documentation](url="https://dateparser.readthedocs.io/en/latest/dateparser.html#dateparser.parse") for possible settings.
 ```python
 DEFAULT_SETTINGS = {
     "TIMEZONE": "UTC",
