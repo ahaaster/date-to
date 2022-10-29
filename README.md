@@ -1,6 +1,7 @@
-# date_to - A light-weight date converter
+# date_to - The easy date converter
 
-[![https://img.shields.io/pypi/v/date_to?label=version](https://img.shields.io/pypi/v/date_to?label=version)](https://pypi.org/project/date_to/)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/date_to?style=for-the-badge) ![GitHub](https://img.shields.io/github/license/ahaaster/date-to?style=for-the-badge) ![PyPI](https://img.shields.io/pypi/v/date-to?style=for-the-badge) 
+
 
 ### Convert any date to another with just one friendly function
 
