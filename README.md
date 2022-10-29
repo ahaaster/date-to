@@ -6,7 +6,7 @@
 
 ```date_to()``` will convert your dates between datetime objects, unix timestamps, and strings. No more boilerplate and headaches of trying to keep track of your dates and their (lack) of timezones.
 
-```date_to()``` utilises the dateparser library for string parsing, enabling [many kinds of string representations](url="https://dateparser.readthedocs.io/en/latest/index.html#features") of time to be converted into machine interpretable dates.
+```date_to()``` utilises the dateparser library for string parsing, enabling [many kinds of string representations](https://dateparser.readthedocs.io/en/latest/index.html#features) of time to be converted into machine interpretable dates.
 
 All output dates are rounded to second precision.
 Default conversion is to the UTC timezone. 
@@ -14,7 +14,7 @@ As of now, timezone conversion is only supported from ```str``` to ```str | date
 
 
 ## Installation
-The ```date_to``` library is available on [PyPi]("https://pypi.org/project/date_to/") and easily installed using pip:
+The ```date_to``` library is available on [PyPi](https://pypi.org/project/date_to/) and easily installed using pip:
 ```
 pip install date_to
 ```
@@ -54,12 +54,12 @@ from datetime import date
 accepted_object_inputs = str | date | int | float
 accepted_string_inputs = {
     str: ["str", "string", "text"],
-    date: ["datetime.date", "datetime", "date", "dt", "dt.date"],
+    date: ["date", "datetime", "datetime.date", "dt", "dt.date"],
     int: ["int", "timestamp", "epoch", "unix", "float"],
 }
 ```
 #### Parse Settings
-If you wish to change the string parse conversion behaviour you can add a ```dict``` of keyword arguments to the function's ```parser_settings=``` optional keyword argument. Please refer to the [dateparser documentation](url="https://dateparser.readthedocs.io/en/latest/dateparser.html#dateparser.parse") for possible settings.
+If you wish to change the string parse conversion behaviour you can add a ```dict``` of keyword arguments to the function's ```parser_settings=``` optional keyword argument. Please refer to the [dateparser documentation](https://dateparser.readthedocs.io/en/latest/dateparser.html#dateparser.parse) for possible settings.
 ```python
 DEFAULT_SETTINGS = {
     "TIMEZONE": "UTC",
