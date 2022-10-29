@@ -47,9 +47,7 @@ def date_to(your_date: DateTypes, /, end_type: DateTypes = dt.date,
 
     settings = _parse_settings(timezone, parser_settings)
     
-    if not your_date:
-        return your_date
-    elif isinstance(your_date, (int, float)):
+    if isinstance(your_date, (int, float)):
         your_date = _round_timestamp_to_seconds(your_date)
 
     if end_type == dt.date:
@@ -62,8 +60,6 @@ def date_to(your_date: DateTypes, /, end_type: DateTypes = dt.date,
             return _string_date_to_timestamp(your_date, settings)
         elif isinstance(your_date, dt.date):
             return _date_time_to_timestamp(your_date)
-        elif isinstance(your_date, float):
-            return int(your_date)
 
     elif end_type == str:
         if isinstance(your_date, str):
