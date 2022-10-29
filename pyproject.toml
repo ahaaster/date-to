@@ -23,6 +23,6 @@ dependencies = [
 requires-python = ">=3.10"
 
 [project.urls]
-Source = "https://github.com/ahaaster/date-to"
+Source = "https://github.com/ahaaster/date-to/blob/master/date_to.py"
 Home = "https://pypi.org/project/date_to/"
-Documentation = "https://github.com/ahaaster/date-to"
+Documentation = "https://github.com/ahaaster/date-to/blob/master/README.md"
