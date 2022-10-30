@@ -31,19 +31,8 @@ def date_to(your_date: DateTypes, /, end_type: DateTypes = dt.date,
     :param parser_settings: dict of keyword arguments for overriding default dateparser.parse() settings
     :return: converted time to specified Type[end_type] rounded to seconds
     """
-       
-    if isinstance(end_type, str):
-        if end_type.lower() in ACCEPTED_STRINGS["str"]:
-            end_type = str
-        elif end_type.lower() in ACCEPTED_STRINGS["date"]:
-            end_type = dt.date
-        elif end_type.lower() in ACCEPTED_STRINGS["int"] or end_type == float:
-            end_type = int
-        else:
-            raise TypeError(
-                f"The only date input types allowed are {DateTypes} either as an object or in stringform.\n"
-                f"Other accepted string representations of these types are: {ACCEPTED_STRINGS}"
-            )
+    
+    end_type = _validate_end_type(end_type)
 
     settings = _parse_settings(timezone, parser_settings)
     
@@ -55,7 +44,7 @@ def date_to(your_date: DateTypes, /, end_type: DateTypes = dt.date,
             return _str_to_datetime(your_date, settings)
         return _to_datetime(your_date, settings)
 
-    elif end_type == int:
+    elif end_type == int or end_type == float:
         if isinstance(your_date, str):
             return _string_date_to_timestamp(your_date, settings)
         elif isinstance(your_date, dt.date):
@@ -123,3 +112,27 @@ def _round_timestamp_to_seconds(_timestamp: int | float) -> int:  # Assumes posi
 
 class DateInputError(Exception):
     pass
+
+
+def _validate_end_type(end_type):
+    # if not isinstance(end_type, (str, int, float, dt.date)):
+    #     raise TypeError(f"Invalid input {end_type=} given. \n"
+    #                     f"The only date input types allowed are {DateTypes} either as an object or in string representation.")
+    
+    if isinstance(end_type, str):
+        if end_type.lower() in ACCEPTED_STRINGS["str"]:
+            end_type = str
+        elif end_type.lower() in ACCEPTED_STRINGS["date"]:
+            end_type = dt.date
+        elif end_type.lower() in ACCEPTED_STRINGS["int"]:
+            end_type = int
+        else:
+            raise KeyError(
+                f"Invalid input string: {end_type=}"
+                f"Accepted string representations are: {ACCEPTED_STRINGS}"
+            )
+
+    # elif isinstance(end_type, float):
+    #     end_type = int
+    
+    return end_type
