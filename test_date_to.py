@@ -33,6 +33,11 @@ def test_invalid_str_endtype():
         date_to(LOCAL_STR, "Not a valid datetype")
 
 
+def test_invalid_endtype():
+    with pytest.raises(TypeError):
+        date_to(LOCAL_STR, dict)
+
+
 def test_invalid_int_input():
     with pytest.raises(DateInputError):
         date_to(-1, int)
@@ -40,4 +45,4 @@ def test_invalid_int_input():
         
 def test_invalid_str_input():
     with pytest.raises(DateInputError):
-        date_to("Een uur geleden")
+        date_to("not an actual date")
