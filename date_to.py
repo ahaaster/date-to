@@ -115,9 +115,9 @@ class DateInputError(Exception):
 
 
 def _validate_end_type(end_type):
-    # if not isinstance(end_type, (str, int, float, dt.date)):
-    #     raise TypeError(f"Invalid input {end_type=} given. \n"
-    #                     f"The only date input types allowed are {DateTypes} either as an object or in string representation.")
+    
+    if end_type == float:
+        end_type = int
     
     if isinstance(end_type, str):
         if end_type.lower() in ACCEPTED_STRINGS["str"]:
@@ -131,8 +131,9 @@ def _validate_end_type(end_type):
                 f"Invalid input string: {end_type=}"
                 f"Accepted string representations are: {ACCEPTED_STRINGS}"
             )
+            
+    elif end_type != str and end_type != int and end_type != dt.date:
+        raise TypeError(f"Invalid input {end_type=} given. \n"
+                        f"The only date input types allowed are {DateTypes} either as an object or in string representation.")
 
-    # elif isinstance(end_type, float):
-    #     end_type = int
-    
     return end_type
