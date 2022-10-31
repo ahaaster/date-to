@@ -1,6 +1,11 @@
 # date_to - The easy date converter
 
-![PyPI - Python Version](https://img.shields.io/pypi/pyversions/date_to?style=for-the-badge) ![GitHub](https://img.shields.io/github/license/ahaaster/date-to?style=for-the-badge) ![PyPI](https://img.shields.io/pypi/v/date-to?style=for-the-badge) 
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/date_to?style=for-the-badge) 
+![GitHub](https://img.shields.io/github/license/ahaaster/date-to?style=for-the-badge) 
+![PyPI](https://img.shields.io/pypi/v/date-to?style=for-the-badge) 
+
+![Tests](https://github.com/ahaaster/date-to/actions/workflows/tests.yml/badge.svg)
+![GitHub Pipenv locked dependency version](https://img.shields.io/github/pipenv/locked/dependency-version/ahaaster/date-to/dateparser)
 
 
 ### Convert any date to another with just one friendly function
