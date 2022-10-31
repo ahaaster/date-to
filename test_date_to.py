@@ -21,8 +21,10 @@ TIME_DATE = datetime.datetime(2001, 9, 11, 21, 20, 52, tzinfo=datetime.timezone.
     
     (TIME_DATE, "text", TIME_STR),
     (TIME_DATE, "timestamp", TIME_INT),
-    (TIME_DATE, "date", TIME_DATE)
+    (TIME_DATE, "date", TIME_DATE),
     
+    (TIME_INT+0.2, "unix", TIME_INT),
+    (TIME_INT*10**3, "epoch", TIME_INT),
 ])
 def test_basic_input_output(input_date, input_type, expected):
     assert date_to(input_date, input_type) == expected
