@@ -13,11 +13,10 @@
 ```date_to()``` will convert your dates between datetime objects, unix timestamps, and strings. No more boilerplate and headaches of trying to keep track of your dates and their (lack) of timezones.
 
 ```date_to()``` utilises the dateparser library for string parsing, enabling [many kinds of string representations](https://dateparser.readthedocs.io/en/latest/index.html#features) of time to be converted into machine interpretable dates.
-
 All output dates are rounded to second precision.
-Default conversion is to the UTC timezone. 
-As of now, timezone conversion is only supported from ```str``` to ```str | datetime.date```. Further conversion support is planned.
 
+Default timezone conversion is to UTC. 
+As of now, timezone conversion is only supported from ```str``` to ```str | datetime.date```. Further conversion support is planned.
 
 ## Installation
 The ```date_to``` library is available on [PyPi](https://pypi.org/project/date_to/) and easily installed using pip:
