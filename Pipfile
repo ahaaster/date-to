@@ -7,7 +7,6 @@ name = "pypi"
 dateparser = "*"
 
 [dev-packages]
-flit = "*"
 pytest = "*"
 pytest-cov = "*"
 tox = "*"
