@@ -9,6 +9,7 @@ dateparser = "*"
 [dev-packages]
 flit = "*"
 pytest = "*"
+pytest-cov = "*"
 
 [requires]
 python_version = "3.10"
