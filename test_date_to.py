@@ -30,6 +30,15 @@ def test_basic_input_output(input_date, input_type, expected):
     assert date_to(input_date, input_type) == expected
 
 
+@pytest.mark.parametrize("input_date, input_type, tz, expected", [
+    (LOCAL_STR, str, "JST", "2001-09-12T06:20:52+09:00"),
+    (TIME_STR, str, "JST", "2001-09-12T06:20:52+09:00"),
+    # (LOCAL_STR, "datetime", "JST", "2001-09-12T06:20:52+09:00"),
+])
+def test_timezone_conversion(input_date, input_type, tz, expected):
+    assert date_to(input_date, input_type, tz) == expected
+
+
 def test_invalid_str_endtype():
     with pytest.raises(KeyError):
         date_to(LOCAL_STR, "Not a valid datetype")
