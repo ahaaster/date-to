@@ -13,7 +13,7 @@ TIME_DATE = datetime.datetime(2001, 9, 11, 21, 20, 52, tzinfo=datetime.timezone.
     (LOCAL_STR, str, TIME_STR),
     (LOCAL_STR, int, TIME_INT),
     (LOCAL_STR, float, TIME_INT),
-    (LOCAL_STR, datetime.date, TIME_DATE),
+    (LOCAL_STR, datetime.datetime, TIME_DATE),
     
     (TIME_INT, "str", TIME_STR),
     (TIME_INT, "int", TIME_INT),
