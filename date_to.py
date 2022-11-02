@@ -125,7 +125,7 @@ def _validate_end_type(end_type):
         if end_type.lower() in ACCEPTED_STRINGS["str"]:
             end_type = str
         elif end_type.lower() in ACCEPTED_STRINGS["date"]:
-            end_type = dt.date
+            end_type = dt.datetime
         elif end_type.lower() in ACCEPTED_STRINGS["int"]:
             end_type = int
         else:
@@ -139,3 +139,11 @@ def _validate_end_type(end_type):
                         f"The only date input types allowed are {DateTypes} either as an object or in string representation.")
 
     return end_type
+
+if __name__ == "__main__":
+    TIME_INT = 1000243252
+    TIME_DATE = dt.datetime(2001, 9, 11, 21, 20, 52, tzinfo=dt.timezone.utc)
+    print(f"{TIME_DATE = }")
+    converted_date = date_to(TIME_INT, "dt")
+    print(f"{converted_date = }")
+    
