@@ -33,11 +33,10 @@ def date_to(your_date: DateTypes, /, end_type: DateTypes = dt.datetime,
     """
     
     end_type = _validate_end_type(end_type)
-
     settings = _parse_settings(timezone, parser_settings)
-    
     if isinstance(your_date, (int, float)):
         your_date = _round_timestamp_to_seconds(your_date)
+
 
     if end_type == dt.datetime:
         if isinstance(your_date, str):
@@ -95,6 +94,7 @@ def _parse_settings(timezone: str = None, parser_settings: dict = None) -> dict:
         settings = parser_settings if parser_settings else DEFAULT_SETTINGS
         if timezone:
             settings["TO_TIMEZONE"] = timezone.upper()
+            settings["tz"] = timezone
         return settings
 
 
