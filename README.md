@@ -14,8 +14,7 @@
 ```date_to()``` utilises the dateparser library for string parsing, enabling [many kinds of string representations](https://dateparser.readthedocs.io/en/latest/index.html#features) of time to be converted into machine interpretable dates.
 All output dates are rounded to second precision.
 
-Default timezone conversion is to UTC.
-As of now, timezone conversion is only supported from ```str``` to ```str | datetime.date```. Further conversion support is planned.
+Default timezone conversion is to UTC. If you wish to convert your date to another timezone, simply provide the abbreviation of your desired timezone for the optional ```timezone=``` keyword argument.
 
 ## Installation
 
