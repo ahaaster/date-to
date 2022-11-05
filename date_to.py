@@ -4,6 +4,7 @@ __version__ = "1.2"
 import math
 import datetime as dt
 from dateparser import parse
+from dateparser.timezone_parser import pop_tz_offset_from_string as tz_parse
 
 
 DateTypes = str | int | float | dt.datetime | dt.date
@@ -41,7 +42,7 @@ def date_to(your_date: DateTypes, /, end_type: DateTypes = dt.datetime,
     if end_type == dt.datetime:
         if isinstance(your_date, str):
             return _str_to_datetime(your_date, settings)
-        return _to_datetime(your_date, settings)
+        return _to_datetime(your_date, timezone)
 
     elif end_type == int or end_type == float:
         if isinstance(your_date, str):
@@ -54,7 +55,7 @@ def date_to(your_date: DateTypes, /, end_type: DateTypes = dt.datetime,
             # This operation completes a possibly incomplete query_string to seconds
             your_date = _str_to_datetime(your_date, settings)
         elif isinstance(your_date, (int, float)):
-            your_date = _to_datetime(your_date, settings)
+            your_date = _to_datetime(your_date, timezone)
         return your_date.isoformat()
 
     return your_date
@@ -69,11 +70,12 @@ def _str_to_datetime(_str_date: str, settings: dict) -> dt.datetime:
         return _datetime
 
 
-def _to_datetime(_time: DateTypes, settings: dict) -> dt.datetime:
+def _to_datetime(_time: DateTypes, timezone: str = None) -> dt.datetime:
     if not isinstance(_time, (int, float)):
         _time = _date_time_to_timestamp(_time)
-
-    return dt.datetime.fromtimestamp(_time, tz=dt.timezone.utc)
+    
+    _tz = tz_parse(f"dummy text {timezone}") if timezone else dt.timezone.utc
+    return dt.datetime.fromtimestamp(_time, tz=_tz)
 
 
 def _date_time_to_timestamp(_date_time: dt.date) -> int:
@@ -94,7 +96,6 @@ def _parse_settings(timezone: str = None, parser_settings: dict = None) -> dict:
         settings = parser_settings if parser_settings else DEFAULT_SETTINGS
         if timezone:
             settings["TO_TIMEZONE"] = timezone.upper()
-            settings["tz"] = timezone
         return settings
 
 
@@ -139,11 +140,3 @@ def _validate_end_type(end_type):
                         f"The only date input types allowed are {DateTypes} either as an object or in string representation.")
 
     return end_type
-
-if __name__ == "__main__":
-    TIME_INT = 1000243252
-    TIME_DATE = dt.datetime(2001, 9, 11, 21, 20, 52, tzinfo=dt.timezone.utc)
-    print(f"{TIME_DATE = }")
-    converted_date = date_to(TIME_INT, "dt")
-    print(f"{converted_date = }")
-    
