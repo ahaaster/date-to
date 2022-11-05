@@ -1,15 +1,16 @@
 """A handy python function to parse and convert to and between datetime.datetime, int, and string objects"""
-__version__ = "1.1"
+__version__ = "1.2"
 
 import math
 import datetime as dt
 from dateparser import parse
+from dateparser.timezone_parser import pop_tz_offset_from_string as tz_parse
 
 
-DateTypes = str | int | float | dt.date
+DateTypes = str | int | float | dt.datetime | dt.date
 ACCEPTED_STRINGS = {
     "str": ["str", "string", "text", ],
-    "date": ["datetime.date", "datetime", "date", "dt", "dt.date", ],
+    "date": ["datetime.datetime", "datetime", "date", "dt", "dt.datetime", "dt.date", ],
     "int": ["int", "timestamp", "epoch", "unix", "float", ],
 }
 
@@ -21,7 +22,7 @@ DEFAULT_SETTINGS = {
 }
 
 
-def date_to(your_date: DateTypes, /, end_type: DateTypes = dt.date,  
+def date_to(your_date: DateTypes, /, end_type: DateTypes = dt.datetime,  
             timezone: str = None, *, parser_settings: dict = None,
             ) -> DateTypes:
     """
@@ -33,21 +34,20 @@ def date_to(your_date: DateTypes, /, end_type: DateTypes = dt.date,
     """
     
     end_type = _validate_end_type(end_type)
-
     settings = _parse_settings(timezone, parser_settings)
-    
     if isinstance(your_date, (int, float)):
         your_date = _round_timestamp_to_seconds(your_date)
 
-    if end_type == dt.date:
+
+    if end_type == dt.datetime:
         if isinstance(your_date, str):
             return _str_to_datetime(your_date, settings)
-        return _to_datetime(your_date, settings)
+        return _to_datetime(your_date, timezone)
 
     elif end_type == int or end_type == float:
         if isinstance(your_date, str):
             return _string_date_to_timestamp(your_date, settings)
-        elif isinstance(your_date, dt.date):
+        elif isinstance(your_date, dt.datetime):
             return _date_time_to_timestamp(your_date)
 
     elif end_type == str:
@@ -55,14 +55,14 @@ def date_to(your_date: DateTypes, /, end_type: DateTypes = dt.date,
             # This operation completes a possibly incomplete query_string to seconds
             your_date = _str_to_datetime(your_date, settings)
         elif isinstance(your_date, (int, float)):
-            your_date = _to_datetime(your_date, settings)
+            your_date = _to_datetime(your_date, timezone)
         return your_date.isoformat()
 
     return your_date
 
 # =====================================
 
-def _str_to_datetime(_str_date: str, settings: dict) -> dt.date:
+def _str_to_datetime(_str_date: str, settings: dict) -> dt.datetime:
     _datetime = parse(_str_date, settings=settings)
     if not _datetime:
         raise DateInputError(f"Input string could not be parsed! Input: {_str_date}")
@@ -70,11 +70,12 @@ def _str_to_datetime(_str_date: str, settings: dict) -> dt.date:
         return _datetime
 
 
-def _to_datetime(_time: DateTypes, settings: dict) -> dt.date:
+def _to_datetime(_time: DateTypes, timezone: str = None) -> dt.datetime:
     if not isinstance(_time, (int, float)):
         _time = _date_time_to_timestamp(_time)
-
-    return dt.datetime.fromtimestamp(_time, tz=dt.timezone.utc)
+    
+    _tz = tz_parse(f"dummy text {timezone}") if timezone else dt.timezone.utc
+    return dt.datetime.fromtimestamp(_time, tz=_tz)
 
 
 def _date_time_to_timestamp(_date_time: dt.date) -> int:
@@ -118,12 +119,14 @@ def _validate_end_type(end_type):
     
     if end_type == float:
         end_type = int
+    elif end_type == dt.date:
+        end_type = dt.datetime
     
     if isinstance(end_type, str):
         if end_type.lower() in ACCEPTED_STRINGS["str"]:
             end_type = str
         elif end_type.lower() in ACCEPTED_STRINGS["date"]:
-            end_type = dt.date
+            end_type = dt.datetime
         elif end_type.lower() in ACCEPTED_STRINGS["int"]:
             end_type = int
         else:
@@ -132,7 +135,7 @@ def _validate_end_type(end_type):
                 f"Accepted string representations are: {ACCEPTED_STRINGS}"
             )
             
-    elif end_type != str and end_type != int and end_type != dt.date:
+    elif end_type != str and end_type != int and end_type != dt.datetime:
         raise TypeError(f"Invalid input {end_type=} given. \n"
                         f"The only date input types allowed are {DateTypes} either as an object or in string representation.")
 

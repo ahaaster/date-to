@@ -57,11 +57,11 @@ print(d, type(d))
 ```python
 from datetime import date
 
-accepted_object_inputs = str | date | int | float
+accepted_object_inputs = str | int | float | dt.datetime | dt.date
 accepted_string_inputs = {
-    str: ["str", "string", "text"],
-    date: ["date", "datetime", "datetime.date", "dt", "dt.date"],
-    int: ["int", "timestamp", "epoch", "unix", "float"],
+    "str": ["str", "string", "text", ],
+    "int": ["int", "timestamp", "epoch", "unix", "float", ],
+    "date": ["datetime.datetime", "datetime", "date", "dt", "dt.datetime", "dt.date", ],
 }
 ```
 
