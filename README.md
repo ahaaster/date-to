@@ -54,7 +54,7 @@ print(d, type(d))
 ### Accepted Inputs
 
 ```python
-from datetime import date
+import datetime as dt
 
 accepted_object_inputs = str | int | float | dt.datetime | dt.date
 accepted_string_inputs = {
