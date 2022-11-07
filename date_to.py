@@ -1,5 +1,5 @@
 """A handy python function to parse and convert to and between datetime.datetime, int, and string objects"""
-__version__ = "1.2"
+__version__ = "1.2.1"
 
 import math
 import datetime as dt
@@ -44,7 +44,7 @@ def date_to(your_date: DateTypes, /, end_type: DateTypes = dt.datetime,
             return _str_to_datetime(your_date, settings)
         return _to_datetime(your_date, timezone)
 
-    elif end_type == int or end_type == float:
+    elif end_type == int:
         if isinstance(your_date, str):
             return _string_date_to_timestamp(your_date, settings)
         elif isinstance(your_date, dt.datetime):
