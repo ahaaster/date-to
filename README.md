@@ -33,8 +33,8 @@ some_date = "2001-09-11 17:20 EDT"
 
 a = date_to(some_date)
 b = date_to(some_date, "date")
-c = date_to(some_date, int)
-d = date_to(some_date, str, timezone="JST")
+c = date_to(some_date, str, timezone="JST")
+d = date_to(some_date, to_type=int)
 
 print(a, type(a))
 print(b, type(b))
@@ -47,14 +47,14 @@ print(d, type(d))
 ```text
 2001-09-11 21:20:00+00:00 <class 'datetime.datetime'>
 2001-09-11 21:20:00+00:00 <class 'datetime.datetime'>
-1000243200 <class 'int'>
 2001-09-12T06:20:00+09:00 <class 'str'>
+1000243200 <class 'int'>
 ```
 
-### Accepted Inputs
+### Accepted ```to_type``` Inputs
 
 ```python
-from datetime import date
+import datetime as dt
 
 accepted_object_inputs = str | int | float | dt.datetime | dt.date
 accepted_string_inputs = {
